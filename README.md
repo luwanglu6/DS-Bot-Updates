@@ -11,7 +11,7 @@ The initial setup publishes information pages only. The version feed intentional
 
 ## Publishing
 
-The initial deployment workflow is manual. GitHub Pages is not enabled yet; enablement requires a separate approval before running that workflow. The first signed-release export supplies the automatic Pages workflow.
+GitHub Pages is enabled with HTTPS and GitHub Actions as its deployment source. The initial deployment workflow is manual; the first signed-release export supplies the automatic Pages workflow.
 
 Upload and verify the signed HAP and its SHA256 in a Release before publishing pages that announce it. Commit generated update pages and manifests under `site/`; the Pages workflow deploys only that directory. Do not commit HAP packages, private keys, provisioning profiles, source checkouts or local runtime data to `site/`.
 
