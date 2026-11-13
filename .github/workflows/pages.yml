@@ -1,13 +1,20 @@
 name: Publish Harmony update pages
+
 on:
-  workflow_dispatch: null
+  push:
+    branches: [main]
+    paths: ['site/**', '.github/workflows/pages.yml']
+  workflow_dispatch:
+
 permissions:
   contents: read
   pages: write
   id-token: write
+
 concurrency:
   group: harmony-update-pages
   cancel-in-progress: false
+
 jobs:
   deploy:
     if: github.event.repository.private == false
@@ -19,22 +26,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Check the generated public site
-        run: >
+        run: |
           test -d site/harmony
-
           if [ -f site/harmony/latest.json ]; then
             test -d site/harmony/releases
           else
             test -f site/harmony/index.html
           fi
-
           if find site -type l -print -quit | read -r entry; then
             printf '%s\n' 'Symbolic links cannot be published.' >&2
             exit 1
           fi
-
-          if find site -type f \( -name '*.hap' -o -name '*.p7b' -o -name
-          '*.p12' \) -print -quit | read -r entry; then
+          if find site -type f \( -name '*.hap' -o -name '*.p7b' -o -name '*.p12' \) -print -quit | read -r entry; then
             printf '%s\n' 'Only generated pages and manifests belong in Pages; packages belong in Releases.' >&2
             exit 1
           fi
